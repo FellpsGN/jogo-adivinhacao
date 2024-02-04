@@ -1,21 +1,41 @@
 let attempts = 0;
 let specialNumber = Math.round(Math.random() * 10);
-const initial = document.querySelector(".screen1");
-const finished = document.querySelector(".screen2");
+const screenOne = document.querySelector(".screen1");
+const screenTwo = document.querySelector(".screen2");
+const btnTry = document.querySelector("#btnTry");
+const btnAgain = document.querySelector("#btnAgain");
 
-console.log(specialNumber);
+//Eventos 
+btnTry.addEventListener('click', handleTryClick);
+btnAgain.addEventListener('click', handleAgainClick);
+document.addEventListener('keydown', handleKeydownEvent);
+
+
+
+//funções
+
+function toggleScreen() {
+    screenOne.classList.toggle("hide");
+    screenTwo.classList.toggle("hide");
+}
 
 function handleTryClick(event) {
     event.preventDefault();
     const inputNumber = document.querySelector("#inputNumber");
-    attempts++;
+    if (inputNumber.value !== '') {
+        attempts++;
+    }
 
     if (Number(inputNumber.value) === specialNumber) {
+        /**
+        * const content = document.querySelector(".screen2");
+        * screen2.querySelector("h2").innerText = `Acertou em ${attempts} tentativa(s)!!`;
+        */
         const content = document.querySelector(".screen2 h2");
+        
         content.innerText = `Acertou em ${attempts} tentativa(s)!!`;
 
-        initial.classList.add("hide");
-        finished.classList.remove("hide");
+        toggleScreen();
     }
 
     inputNumber.value = "";
@@ -23,17 +43,18 @@ function handleTryClick(event) {
 }
 
 function handleAgainClick() {
-    initial.classList.remove("hide");
-    finished.classList.add("hide");
+    toggleScreen();
     attempts = 0;
     specialNumber = Math.round(Math.random() * 10);
 }
 
-//Eventos 
-const btnTry = document.querySelector("#btnTry");
-const btnAgain = document.querySelector("#btnAgain");
+function handleKeydownEvent(e) {
+    /* console.log(e.key); */
+    if (e.key == 'Enter' && screenOne.classList.contains("hide")) {
+        handleAgainClick();
+    }
+}
 
-btnTry.addEventListener('click', handleTryClick);
-btnAgain.addEventListener('click', handleAgainClick);
+
 
 
